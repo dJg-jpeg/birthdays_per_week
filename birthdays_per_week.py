@@ -17,7 +17,8 @@ def first_weekday(year, month, day):
 def parse_date_now(date_now):
     left_date = first_weekday(date_now.year, date_now.month, date_now.day + (7 - date_now.weekday()))
     right_date = first_weekday(left_date.year, left_date.month, left_date.day + 7)
-    return left_date, right_date
+    left_left_date = first_weekday(left_date.year, left_date.month, left_date.day - 2)
+    return left_date, right_date, left_left_date
 
 
 def get_birthdays(users):
@@ -29,6 +30,10 @@ def get_birthdays(users):
         if ((datetime(year=l_r_date[0].year, month=month, day=day) >= l_r_date[0])
                 and (datetime(year=l_r_date[0].year, month=month, day=day) < l_r_date[1])):
             birthday['birthday'] = datetime(year=l_r_date[0].year, month=month, day=day).strftime('%A')
+            birthday_users.append(birthday)
+        elif ((datetime(year=l_r_date[0].year, month=month, day=day) >= l_r_date[2])
+                and (datetime(year=l_r_date[0].year, month=month, day=day) < l_r_date[0])):
+            birthday['birthday'] = 'Monday'
             birthday_users.append(birthday)
     return birthday_users
 
@@ -47,7 +52,7 @@ def output_birthdays_next_week(users):
 
 
 if __name__ == '__main__':
-    output_birthdays_next_week([{'name': 'Bill', 'birthday': datetime(year=1998, month=10, day=25)},
+    output_birthdays_next_week([{'name': 'Bill', 'birthday': datetime(year=1998, month=10, day=23)},
                                 {'name': 'Jill', 'birthday': datetime(year=1974, month=10, day=27)},
                                 {'name': 'Kim', 'birthday': datetime(year=2001, month=10, day=25)},
                                 {'name': 'Jan', 'birthday': datetime(year=1987, month=6, day=11)}
